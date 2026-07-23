@@ -1,17 +1,33 @@
-# Scaling & Monitoring (should-have bonus) - ce-project-1 | 2026-07-23 14:19 UTC
+# Scaling & Monitoring (should-have bonus) - ce-project-1 | 2026-07-23 15:19 UTC
 
-AUTO SCALING GROUP  ce-app-asg
+AUTO SCALING GROUP  ce-app-asg  (min 3 / desired 3 / max 4)
 {
-    "Min": 2,
+    "Min": 3,
     "Desired": 3,
     "Max": 4,
-    "Subnets": "subnet-049f32c8e8e534e85,subnet-0a9bef3ba8fa34d1e",
     "HealthCheck": "ELB",
     "LaunchTemplate": "ce-app-lt",
-    "TargetGroups": [
-        "arn:aws:elasticloadbalancing:us-east-1:697345203222:targetgroup/ce-app-tg/3f16f11f811aa77e"
+    "Instances": [
+        [
+            "i-024a6855bd6afaed6",
+            "us-east-1b",
+            "InService"
+        ],
+        [
+            "i-05d002454923ed26d",
+            "us-east-1a",
+            "InService"
+        ],
+        [
+            "i-0e5fab5612868f501",
+            "us-east-1b",
+            "InService"
+        ]
     ]
 }
+
+NOTE: min was raised 2->3 so the CPU target-tracking policy cannot scale the app tier
+      below the project's required 3 instances at idle. It can still scale up to 4 under load.
 
 SCALING POLICY: ce-cpu-tracking (target-tracking, ASGAverageCPUUtilization = 50%)
 LAUNCH TEMPLATE: ce-app-lt (lt-084477dff93c22b43) - AL2023 t3.micro, app-sg, IMDSv2 required

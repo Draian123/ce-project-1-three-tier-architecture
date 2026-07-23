@@ -29,7 +29,7 @@ case "${1:-}" in
   start)
     echo ">> Starting data instance and scaling app ASG back to 3..."
     aws ec2 start-instances --instance-ids "$DATA_INSTANCE" --query 'StartingInstances[0].CurrentState.State' --output text
-    aws autoscaling update-auto-scaling-group --auto-scaling-group-name "$ASG" --min-size 2 --desired-capacity 3
+    aws autoscaling update-auto-scaling-group --auto-scaling-group-name "$ASG" --min-size 3 --desired-capacity 3
     aws ec2 wait instance-running --instance-ids "$DATA_INSTANCE"
     echo ">> Waiting for ALB targets to become healthy (~2-3 min while instances boot + run user-data)..."
     for i in $(seq 1 30); do

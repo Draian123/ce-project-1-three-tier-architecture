@@ -3,7 +3,7 @@
 What I'd change to take this from a working bootcamp deployment to a production-ready system, organized by horizon.
 
 ## ✅ Already implemented (should-have bonus)
-- **Auto Scaling Group** `ce-app-asg` (min 2 / desired 3 / max 4) with **CPU target-tracking** scaling.
+- **Auto Scaling Group** `ce-app-asg` (min 3 / desired 3 / max 4) with **CPU target-tracking** scaling.
 - **HTTPS listener + ACM certificate** on the ALB (`:443`; self-signed for the demo).
 - **VPC Flow Logs** → CloudWatch (`/vpc/ce-project-1/flowlogs`).
 - **CloudWatch alarms** — unhealthy hosts, target 5XX.

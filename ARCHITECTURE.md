@@ -14,7 +14,7 @@ A production-shaped **3-tier web application** on AWS: an internet-facing load b
 | Network | Internet Gateway `bootcamp-igw` | `igw-0b05f13160e05bfc8` | Ingress/egress for public subnets |
 | Network | NAT Gateway `bootcamp-nat-1a` | `nat-0a456faf68c5e5724` | Outbound-only internet for private subnets (EIP 3.219.62.36) |
 | Tier 1 | Application Load Balancer `ce-app-alb` | internet-facing | HTTP :80 **and HTTPS :443 (ACM)** entry point, spreads traffic across AZs |
-| Tier 2 | Auto Scaling Group `ce-app-asg` (min 2 / desired 3 / max 4) | `lt-084477dff93c22b43` | Stateless web app on t3.micro/AL2023; target group members; CPU target-tracking scaling |
+| Tier 2 | Auto Scaling Group `ce-app-asg` (min 3 / desired 3 / max 4) | `lt-084477dff93c22b43` | Stateless web app on t3.micro/AL2023; target group members; CPU target-tracking scaling |
 | Tier 3 | 1× EC2 `data-db` (simulated DB) | `i-02bb4326af4a8a7b2` | Data store placeholder on :3306 |
 
 ## Network design
@@ -72,7 +72,7 @@ Being stateless, any instance can serve any request, which is what makes horizon
 - **Stateless tier:** no session affinity required; requests are freely balanced.
 
 ### Implemented should-haves (bonus)
-- **Auto Scaling Group** `ce-app-asg` — replaces the fixed instances; a failed instance is launched fresh automatically, and a **CPU target-tracking** policy (50%) scales 2→4 with load.
+- **Auto Scaling Group** `ce-app-asg` — replaces the fixed instances; a failed instance is launched fresh automatically, and a **CPU target-tracking** policy (50%) scales 3→4 with load.
 - **HTTPS listener** on the ALB (`:443`, ACM cert — self-signed for the demo).
 - **VPC Flow Logs** (`fl-032b57de…` → CloudWatch) and **CloudWatch alarms** (unhealthy hosts, target 5XX).
 

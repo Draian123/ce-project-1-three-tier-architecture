@@ -43,7 +43,7 @@ Full detail in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 | VPC `bootcamp-vpc` (10.0.0.0/16) | `vpc-0917ed6d87b005f58` |
 | Internet Gateway | `igw-0b05f13160e05bfc8` |
 | NAT Gateway (EIP 3.219.62.36) | `nat-0a456faf68c5e5724` |
-| App instances | `i-006dcbf0b26c73872`, `i-0375a3d0aebc05159`, `i-098084ed2ca7bb99f` |
+| App tier | Auto Scaling Group `ce-app-asg` (min 3 / desired 3 / max 4) — instance IDs are dynamic |
 | Data instance | `i-02bb4326af4a8a7b2` |
 | ALB / Target group | `ce-app-alb` / `ce-app-tg` |
 
@@ -55,7 +55,7 @@ Full detail in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 - **Stateless app** — any instance serves any request, enabling trivial scaling and failover.
 
 ## Reliability & security add-ons (should-haves, implemented)
-- **Auto Scaling Group** — app tier runs behind `ce-app-asg` (min 2 / desired 3 / max 4) with a **CPU target-tracking** policy; a failed instance is now *replaced automatically*, not just restarted.
+- **Auto Scaling Group** — app tier runs behind `ce-app-asg` (min 3 / desired 3 / max 4) with a **CPU target-tracking** policy; a failed instance is now *replaced automatically*, not just restarted.
 - **HTTPS** — ALB has an `:443` listener with an ACM certificate (self-signed for this demo) alongside `:80`.
 - **Monitoring** — **VPC Flow Logs** to CloudWatch + **CloudWatch alarms** (unhealthy hosts, target 5XX).
 - **Cost control** — [`app/manage.sh`](app/manage.sh) `stop`/`start`/`status` pauses compute (ASG → 0, data instance stopped) without tearing anything down.
