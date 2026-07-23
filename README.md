@@ -32,7 +32,7 @@ A production-shaped **3-tier web application** on AWS: an internet-facing Applic
 |---|---|---|
 | **1 · Presentation** | ALB `ce-app-alb` (internet-facing, HTTP :80) | public subnets, `public-rt` → IGW |
 | **2 · Application** | 3× EC2 t3.micro (AL2023), stateless Python app | private subnets, `app-rt` → NAT (outbound only) |
-| **3 · Data** | 1× EC2 simulated DB (:3306) | isolated subnets, `data-rt` → local only |
+| **3 · Data** | 2× EC2 simulated DB, **Multi-AZ** (primary 1a / standby 1b, :3306) | isolated subnets, `data-rt` → local only |
 
 Full detail in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 
@@ -44,7 +44,7 @@ Full detail in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 | Internet Gateway | `igw-0b05f13160e05bfc8` |
 | NAT Gateway (EIP 3.219.62.36) | `nat-0a456faf68c5e5724` |
 | App tier | Auto Scaling Group `ce-app-asg` (min 3 / desired 3 / max 4) — instance IDs are dynamic |
-| Data instance | `i-02bb4326af4a8a7b2` |
+| Data instances (Multi-AZ) | primary `i-02bb4326…` (1a) · standby `i-0ac9214e…` (1b) |
 | ALB / Target group | `ce-app-alb` / `ce-app-tg` |
 
 ## Highlights

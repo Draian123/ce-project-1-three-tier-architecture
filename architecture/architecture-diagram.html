@@ -329,11 +329,11 @@
       <div class="cols">
         <div class="subnet">
           <div class="subnet-meta"><span class="subnet-name">data-subnet-1a</span><span class="subnet-cidr">10.0.21.0/24</span></div>
-          <div class="node"><span class="ico">DB</span><div class="body"><div class="t"><span class="stat on"></span> data-db · i-02bb4326</div><div class="s">10.0.21.110:3306 · simulated DB · App tier only</div></div></div>
+          <div class="node"><span class="ico">DB</span><div class="body"><div class="t"><span class="stat on"></span> data-db primary · i-02bb4326</div><div class="s">10.0.21.110:3306 · simulated DB · App tier only</div></div></div>
         </div>
         <div class="subnet">
           <div class="subnet-meta"><span class="subnet-name">data-subnet-1b</span><span class="subnet-cidr">10.0.22.0/24</span></div>
-          <div class="node"><span class="ico">DB</span><div class="body"><div class="t"><span class="stat off"></span> Database (standby)</div><div class="s">RDS Multi-AZ standby (should-have)</div></div></div>
+          <div class="node"><span class="ico">DB</span><div class="body"><div class="t"><span class="stat on"></span> data-db standby · i-0ac9214e</div><div class="s">10.0.22.147:3306 · simulated DB · app fails over here</div></div></div>
         </div>
       </div>
     </div>

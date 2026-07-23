@@ -1,16 +1,18 @@
-# EC2 Instances - ce-project-1 | Generated 2026-07-23 08:27 UTC
+# EC2 Instances - ce-project-1 | Generated 2026-07-23 18:14 UTC
 
-------------------------------------------------------------------------------------------------------------------------------------------
-|                                                            DescribeInstances                                                           |
-+------------+----------------------+-------------+--------------+---------------------+---------------------------+--------+------------+
-|     AZ     |         ID           |    Name     |  PrivateIP   |         SG          |          Subnet           | Tier   |   Type     |
-+------------+----------------------+-------------+--------------+---------------------+---------------------------+--------+------------+
-|  us-east-1a|  i-02bb4326af4a8a7b2 |  data-db-1a |  10.0.21.110 |  data-tier-sg-3tier |  subnet-02b652b1affd7912a |  data  |  t3.micro  |
-|  us-east-1a|  i-0375a3d0aebc05159 |  app-web-1a |  10.0.11.107 |  app-tier-sg-3tier  |  subnet-0a9bef3ba8fa34d1e |  app   |  t3.micro  |
-|  us-east-1a|  i-006dcbf0b26c73872 |  app-web-1a |  10.0.11.139 |  app-tier-sg-3tier  |  subnet-0a9bef3ba8fa34d1e |  app   |  t3.micro  |
-|  us-east-1b|  i-098084ed2ca7bb99f |  app-web-1b |  10.0.12.45  |  app-tier-sg-3tier  |  subnet-049f32c8e8e534e85 |  app   |  t3.micro  |
-+------------+----------------------+-------------+--------------+---------------------+---------------------------+--------+------------+
+---------------------------------------------------------------------------------------------------------
+|                                           DescribeInstances                                           |
++------------+----------------------+--------------+--------------+----------------------------+--------+
+|     AZ     |         ID           |    Name      |  PrivateIP   |          Subnet            | Tier   |
++------------+----------------------+--------------+--------------+----------------------------+--------+
+|  us-east-1a|  i-02bb4326af4a8a7b2 |  data-db-1a  |  10.0.21.110 |  subnet-02b652b1affd7912a  |  data  |
+|  us-east-1a|  i-088cac14fea3436ae |  app-web-asg |  10.0.11.95  |  subnet-0a9bef3ba8fa34d1e  |  app   |
+|  us-east-1a|  i-0283bd36486f86548 |  app-web-asg |  10.0.11.153 |  subnet-0a9bef3ba8fa34d1e  |  app   |
+|  us-east-1b|  i-0ac9214e7c05c0335 |  data-db-1b  |  10.0.22.147 |  subnet-07ffe63490b3b2a6a  |  data  |
+|  us-east-1b|  i-0e2cf92a075f9d946 |  app-web-asg |  10.0.12.147 |  subnet-049f32c8e8e534e85  |  app   |
++------------+----------------------+--------------+--------------+----------------------------+--------+
 
-IAM instance profile: ec2-s3-cloudwatch-role (AmazonSSMManagedInstanceCore + CloudWatchAgentServerPolicy)
-AMI: ami-0f303bae6b670e0ed (Amazon Linux 2023)
-App: python3 web app on :80 (instance-id, AZ, DB status, /health). Data: simulated DB listener on :3306.
+App tier: Auto Scaling Group ce-app-asg (min 3 / desired 3 / max 4), CPU target-tracking.
+Data tier: Multi-AZ simulated DB - primary in data-subnet-1a, standby in data-subnet-1b;
+           the app connects to primary and fails over to standby if primary is unreachable.
+IAM instance profile: ec2-s3-cloudwatch-role. AMI: ami-0f303bae6b670e0ed (AL2023).

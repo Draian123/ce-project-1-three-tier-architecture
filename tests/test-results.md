@@ -52,3 +52,24 @@ Even distribution across all 3 instances and both AZs. Every response reported "
 ## Pending (Day 3)
 - Failover test: deregister/stop one instance, confirm ALB routes around it (tests/failover-test.md).
 - Live negative demo: attempt direct access to a private resource and show it is refused.
+
+---
+
+# Data-Tier Multi-AZ Failover Test
+Date: 2026-07-23 | Region: us-east-1
+
+## Setup
+Data tier runs two simulated-DB nodes: primary `i-02bb4326…` (10.0.21.110, us-east-1a) and
+standby `i-0ac9214e…` (10.0.22.147, us-east-1b). The app tries the primary first, then the standby.
+
+## Test: stop the primary, observe the app
+| Phase | /health `db_active` | `db` |
+|---|---|---|
+| Baseline | `primary` (10.0.21.110) | up |
+| Primary stopped | **`standby` (10.0.22.147)** | **up** |
+| Primary restarted | `primary` (10.0.21.110) | up |
+
+## Result — PASS
+Losing the primary data node (an AZ-a failure) did **not** take the data tier down: every app
+instance failed the DB connection over to the standby in us-east-1b and kept reporting `db:up`.
+On recovery, the app failed back to the primary automatically. The data tier is genuinely Multi-AZ.
