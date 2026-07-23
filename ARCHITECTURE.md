@@ -2,7 +2,9 @@
 
 A production-shaped **3-tier web application** on AWS: an internet-facing load balancer in front of a stateless application fleet, backed by an isolated data tier. Everything runs inside a single VPC spread across **two Availability Zones** for high availability.
 
-> Diagram: [`architecture/architecture-diagram.html`](architecture/architecture-diagram.html) (interactive) — shows tiers, subnets, gateways, security-group flow, and live/planned status.
+> Diagrams (`architecture/`): [architecture-diagram.png](architecture/architecture-diagram.png) · [network-diagram.png](architecture/network-diagram.png) · [security-groups-diagram.png](architecture/security-groups-diagram.png) · [traffic-flow-diagram.png](architecture/traffic-flow-diagram.png). An interactive HTML version is also included ([architecture-diagram.html](architecture/architecture-diagram.html)).
+
+![3-tier architecture](architecture/architecture-diagram.png)
 
 ## Component overview
 
