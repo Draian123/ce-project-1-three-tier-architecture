@@ -1,18 +1,16 @@
 # Presentation
 
-Materials for the Friday presentation (20 min + 5 min Q&A).
+Materials for the presentation (20 min + 5 min Q&A). **Presented from AWS-console screenshots — no live demo.**
 
 ## Contents
-- **`slides.html`** — 10-slide deck (cover, architecture, network, security, demo, results, cost, challenges, improvements, Q&A). Self-contained, styled to match the architecture diagram.
-- **`demo-script.md`** — minute-by-minute run of show: setup checklist, the live demo steps, talking points, and Q&A prep. Read this before presenting.
-- **`screenshots/`** — backup visuals, including `app-load-balancing.gif` (live load-balancing proof) and a shot list for the console captures to add.
+- **`three-tier-slides.pptx`** — the main deck (22 slides) with the **console screenshots embedded** on their slides, each with talking points beside it. Open in PowerPoint or Google Slides.
+- **`presentation-plan.md`** — slide-by-slide plan: timing, what to say per slide, and Q&A prep. **Read this before presenting.**
+- **`slides.html`** — the earlier text-only deck (cover→Q&A), kept as a lightweight/print-friendly alternative.
+- **`demo-script.md`** — detailed talking points and Q&A prep (from when a live demo was planned; still useful).
+- **`screenshots/`** — the 15 numbered console screenshots + `app-load-balancing.gif` (live load-balancing proof). These are the evidence embedded in the deck.
 
-## Generating `slides.pdf` (the required deliverable)
-The deck is built to print cleanly to PDF:
+## Slide order
+Cover → Architecture → Network → Security → Compute/Load balancing → Auto Scaling → HTTPS/Monitoring → Multi-AZ data + app → Results → Cost → Challenges → Improvements → Q&A. Full timing in `presentation-plan.md`.
 
-1. Open `slides.html` in Chrome (or the published artifact link).
-2. `Ctrl+P` → **Destination: Save as PDF**.
-3. **Layout: Landscape**, **Margins: None**, enable **Background graphics**.
-4. Save as `presentation/slides.pdf`.
-
-Each slide is set to one page (`page-break-after`), so you get one slide per PDF page.
+## Optional: export to `slides.pdf`
+In PowerPoint/Google Slides: **File → Export/Download → PDF**. (Or print `slides.html` → Save as PDF, landscape, background graphics on.)
