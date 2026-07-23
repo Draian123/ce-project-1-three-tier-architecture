@@ -1,0 +1,26 @@
+# VPC / Network Configuration - bootcamp-vpc
+# Generated: 2026-07-23 07:42 UTC | Region: us-east-1 | Account: 697345203222
+
+VPC:            vpc-0917ed6d87b005f58   bootcamp-vpc   10.0.0.0/16
+Internet GW:    igw-0b05f13160e05bfc8   bootcamp-igw   (attached)
+NAT Gateway:    nat-0a456faf68c5e5724   bootcamp-nat-1a  EIP 3.219.62.36  (in public-subnet-1a)
+
+SUBNETS (6 across 2 AZs: us-east-1a, us-east-1b)
+  Tier          Name               Subnet ID                  CIDR          AZ           Route Table
+  Presentation  public-subnet-1a   subnet-0a8a1e9afe3d8117b   10.0.1.0/24   us-east-1a   public-rt -> IGW
+  Presentation  public-subnet-1b   subnet-0c28b42a4bdc84fda   10.0.2.0/24   us-east-1b   public-rt -> IGW
+  Application   private-subnet-1a  subnet-0a9bef3ba8fa34d1e   10.0.11.0/24  us-east-1a   app-rt    -> NAT
+  Application   private-subnet-1b  subnet-049f32c8e8e534e85   10.0.12.0/24  us-east-1b   app-rt    -> NAT
+  Data          data-subnet-1a     subnet-02b652b1affd7912a   10.0.21.0/24  us-east-1a   data-rt   -> local only (isolated)
+  Data          data-subnet-1b     subnet-07ffe63490b3b2a6a   10.0.22.0/24  us-east-1b   data-rt   -> local only (isolated)
+
+ROUTE TABLES
+  public-rt  rtb-0a9cd02513dfd040a : 10.0.0.0/16 local ; 0.0.0.0/0 -> igw-0b05f13160e05bfc8
+  app-rt     rtb-0d817b91252426d3e : 10.0.0.0/16 local ; 0.0.0.0/0 -> nat-0a456faf68c5e5724
+  data-rt    rtb-00f832c0d6d0c4cb7 : 10.0.0.0/16 local   (no internet route = full isolation)
+
+CIDR PLAN RATIONALE
+  VPC /16 = 65,536 IPs, leaves ample room for growth.
+  /24 per subnet = 251 usable IPs each (AWS reserves 5) - generous for EC2/RDS, avoids /28 pitfall.
+  Octet scheme encodes tier: 10.0.1-2.x = public, 10.0.11-12.x = app, 10.0.21-22.x = data.
+  Last octet-group encodes AZ: .1x/.2x = a/b pattern within tier. Symmetric, easy to reason about.

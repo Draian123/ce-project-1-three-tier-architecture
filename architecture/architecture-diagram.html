@@ -1,0 +1,347 @@
+<style>
+  :root {
+    --page: #f6f7f9;
+    --card: #ffffff;
+    --ink: #0f172a;
+    --muted: #5b6675;
+    --faint: #8a94a3;
+    --line: #dbe1ea;
+    --line-strong: #c3ccd8;
+    --frame: #3b5bdb;
+    --net: #0369a1;
+    --present: #b45309;
+    --present-bg: #fffaf3;
+    --app: #0e7c72;
+    --app-bg: #f2fbf9;
+    --data: #6d28d9;
+    --data-bg: #f8f6ff;
+    --danger: #b42318;
+    --ok: #12805c;
+    --mono: ui-monospace, "SF Mono", "SFMono-Regular", "Menlo", "Cascadia Code", "Consolas", monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  .wrap {
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--page);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    padding: clamp(20px, 4vw, 48px);
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  /* ---------- header ---------- */
+  .head { border-bottom: 1px solid var(--line); padding-bottom: 22px; margin-bottom: 26px; }
+  .eyebrow {
+    font-size: 12px; font-weight: 650; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--frame); margin: 0 0 8px;
+  }
+  h1 {
+    font-size: clamp(24px, 3.4vw, 34px); line-height: 1.12; margin: 0 0 6px;
+    letter-spacing: -0.02em; text-wrap: balance; font-weight: 700;
+  }
+  .subtitle { color: var(--muted); margin: 0 0 18px; font-size: 15px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: var(--mono); font-size: 12px; color: var(--ink);
+    background: var(--card); border: 1px solid var(--line);
+    padding: 5px 10px; border-radius: 6px; white-space: nowrap;
+  }
+  .chip b { color: var(--faint); font-weight: 500; margin-right: 6px; }
+
+  /* ---------- legend ---------- */
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 18px 26px; align-items: center;
+    padding: 14px 16px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; margin-bottom: 26px; font-size: 12.5px; color: var(--muted);
+  }
+  .legend .grp { display: flex; align-items: center; gap: 8px; }
+  .sw { width: 13px; height: 13px; border-radius: 3px; flex: none; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .dot.on { background: var(--ok); }
+  .dot.off { background: transparent; border: 1.5px solid var(--faint); }
+
+  /* ---------- internet + igw ---------- */
+  .cloud {
+    text-align: center; margin: 0 auto 4px; max-width: 260px;
+    border: 1px dashed var(--line-strong); border-radius: 40px;
+    padding: 10px 20px; background: var(--card); color: var(--muted);
+    font-size: 13px; font-weight: 600;
+  }
+  .cloud span { color: var(--faint); font-weight: 400; font-family: var(--mono); font-size: 11.5px; }
+
+  .rail { display: flex; flex-direction: column; align-items: center; gap: 2px; margin: 6px 0; }
+  .rail .stem { width: 2px; height: 16px; background: var(--line-strong); }
+  .flowlabel {
+    font-size: 11.5px; color: var(--muted); background: var(--page);
+    padding: 2px 8px; text-align: center;
+  }
+  .flowlabel .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 17px; height: 17px; border-radius: 50%; background: var(--frame);
+    color: #fff; font-size: 11px; font-weight: 700; margin-right: 7px; vertical-align: middle;
+  }
+  .flowlabel code { font-family: var(--mono); font-size: 11px; color: var(--ink); }
+
+  .gateway {
+    display: inline-flex; align-items: center; gap: 9px; margin: 0 auto;
+    background: var(--card);
+    border: 1.5px solid var(--net); color: var(--net);
+    border-radius: 9px; padding: 9px 15px; font-weight: 650; font-size: 13.5px;
+  }
+  .gateway .id { font-family: var(--mono); font-size: 11px; color: var(--faint); font-weight: 400; }
+
+  /* ---------- vpc frame ---------- */
+  .vpc {
+    border: 1.5px solid var(--frame); border-radius: 14px; margin-top: 8px;
+    padding: 14px clamp(12px, 2.4vw, 22px) 20px;
+    background:
+      linear-gradient(var(--card), var(--card)) padding-box,
+      repeating-linear-gradient(0deg, transparent, transparent 23px, #eef1f6 23px, #eef1f6 24px),
+      repeating-linear-gradient(90deg, transparent, transparent 23px, #eef1f6 23px, #eef1f6 24px);
+  }
+  .vpc > .vpc-tab {
+    display: inline-flex; align-items: baseline; gap: 10px;
+    font-weight: 700; color: var(--frame); font-size: 14px; margin-bottom: 6px;
+  }
+  .vpc > .vpc-tab .id { font-family: var(--mono); font-size: 11.5px; color: var(--faint); font-weight: 400; }
+
+  /* az header row */
+  .azrow {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 10px 0 4px;
+  }
+  .azhead {
+    text-align: center; font-family: var(--mono); font-size: 11.5px; letter-spacing: .04em;
+    color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 6px; font-weight: 600;
+  }
+
+  /* tier lane */
+  .lane {
+    border: 1px solid var(--line); border-left: 4px solid var(--tier, var(--line));
+    border-radius: 10px; background: var(--tier-bg, var(--card));
+    padding: 12px 14px; margin: 0;
+  }
+  .lane-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .lane-title { font-weight: 700; font-size: 14px; color: var(--tier); letter-spacing: -0.01em; }
+  .lane-title small { display: block; font-weight: 500; color: var(--muted); font-size: 11.5px; letter-spacing: 0; margin-top: 1px; }
+  .lane-tag {
+    font-size: 11px; font-weight: 600; color: var(--tier); background: var(--card);
+    border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px;
+  }
+  .lane-tag.iso { color: var(--danger); }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .subnet {
+    border: 1px dashed var(--line-strong); border-radius: 8px; padding: 10px;
+    background: var(--card); display: flex; flex-direction: column; gap: 9px;
+  }
+  .subnet-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .subnet-name { font-size: 12px; font-weight: 650; color: var(--ink); }
+  .subnet-cidr { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+  /* resource node */
+  .node {
+    display: flex; align-items: center; gap: 9px;
+    border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px; background: var(--card);
+  }
+  .node .ico {
+    width: 26px; height: 26px; border-radius: 6px; flex: none;
+    display: grid; place-items: center; color: #fff; font-size: 13px; font-weight: 700;
+    background: var(--tier);
+  }
+  .node .body { min-width: 0; flex: 1; }
+  .node .t { font-size: 12.5px; font-weight: 650; display: flex; align-items: center; gap: 6px; }
+  .node .s { font-family: var(--mono); font-size: 10.5px; color: var(--faint); margin-top: 1px; }
+  .node.net .ico { background: var(--net); }
+  .node.span {
+    grid-column: 1 / -1; border-style: solid; border-color: var(--tier);
+    background: var(--tier-bg);
+  }
+
+  .stat { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+  .stat.on { background: var(--ok); }
+  .stat.off { background: transparent; border: 1.5px solid var(--faint); }
+
+  .multi { display: flex; flex-direction: column; gap: 8px; }
+
+  .sg {
+    font-size: 11px; color: var(--muted); font-family: var(--mono);
+    background: var(--card); border: 1px solid var(--line); border-radius: 5px;
+    padding: 2px 7px;
+  }
+  .sg b { color: var(--tier); font-weight: 700; }
+
+  /* nat side note inside public lane */
+  .outbound {
+    margin-top: 12px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    font-size: 11.5px; color: var(--muted);
+    border-top: 1px dashed var(--line); padding-top: 10px;
+  }
+
+  .lane + .lane { margin-top: 0; }
+
+  footer {
+    margin-top: 30px; padding-top: 18px; border-top: 1px solid var(--line);
+    font-size: 12px; color: var(--faint); display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: space-between;
+  }
+
+  @media (max-width: 640px) {
+    .azrow, .cols { grid-template-columns: 1fr; }
+    .azhead:nth-child(2) { margin-top: 4px; }
+    .node.span { grid-column: auto; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="head">
+    <p class="eyebrow">Project 1 · Cloud Engineering</p>
+    <h1>3-Tier Cloud Architecture — bootcamp-vpc</h1>
+    <p class="subtitle">Internet-facing, load-balanced application across two Availability Zones with a fully isolated data tier.</p>
+    <div class="meta">
+      <span class="chip"><b>Region</b>us-east-1</span>
+      <span class="chip"><b>Account</b>697345203222</span>
+      <span class="chip"><b>VPC</b>vpc-0917ed6d87b005f58</span>
+      <span class="chip"><b>CIDR</b>10.0.0.0/16</span>
+      <span class="chip"><b>NAT EIP</b>3.219.62.36</span>
+      <span class="chip"><b>ALB</b>ce-app-alb-1960431634.us-east-1.elb.amazonaws.com</span>
+    </div>
+  </header>
+
+  <div class="legend">
+    <div class="grp"><span class="sw" style="background:var(--present)"></span> Presentation tier</div>
+    <div class="grp"><span class="sw" style="background:var(--app)"></span> Application tier</div>
+    <div class="grp"><span class="sw" style="background:var(--data)"></span> Data tier</div>
+    <div class="grp"><span class="sw" style="background:var(--net)"></span> Gateway / networking</div>
+    <div class="grp"><span class="dot on"></span> Deployed</div>
+    <div class="grp"><span class="dot off"></span> Planned (Day 1 pm →)</div>
+  </div>
+
+  <!-- Internet -->
+  <div class="cloud">🌐 Internet <span>0.0.0.0/0</span></div>
+
+  <div class="rail"><div class="stem"></div></div>
+  <div style="text-align:center">
+    <span class="gateway"><span class="stat on" style="background:#fff;border:2px solid currentColor"></span> Internet Gateway <span class="id">igw-0b05f13160e05bfc8</span></span>
+  </div>
+  <div class="rail">
+    <div class="stem"></div>
+    <div class="flowlabel"><span class="num">1</span>Inbound HTTP <code>:80</code> → Application Load Balancer</div>
+    <div class="stem"></div>
+  </div>
+
+  <!-- VPC -->
+  <section class="vpc">
+    <div class="vpc-tab">VPC · bootcamp-vpc <span class="id">10.0.0.0/16</span></div>
+
+    <div class="azrow">
+      <div class="azhead">Availability Zone · us-east-1a</div>
+      <div class="azhead">Availability Zone · us-east-1b</div>
+    </div>
+
+    <!-- PRESENTATION -->
+    <div class="lane" style="--tier:var(--present); --tier-bg:var(--present-bg)">
+      <div class="lane-head">
+        <div class="lane-title">Tier 1 · Presentation <small>Public subnets · route table: public-rt → IGW</small></div>
+        <span class="lane-tag">Internet-facing</span>
+      </div>
+
+      <div class="cols">
+        <div class="node span net">
+          <span class="ico">ALB</span>
+          <div class="body">
+            <div class="t"><span class="stat on"></span> Application Load Balancer · ce-app-alb</div>
+            <div class="s">internet-facing · listener :80 · /health · 3/3 targets healthy · spans 1a + 1b</div>
+          </div>
+        </div>
+
+        <div class="subnet">
+          <div class="subnet-meta"><span class="subnet-name">public-subnet-1a</span><span class="subnet-cidr">10.0.1.0/24</span></div>
+          <div class="node net"><span class="ico">NAT</span>
+            <div class="body"><div class="t"><span class="stat on"></span> NAT Gateway</div><div class="s">nat-0a456faf68c5e5724 · EIP 3.219.62.36</div></div>
+          </div>
+        </div>
+        <div class="subnet">
+          <div class="subnet-meta"><span class="subnet-name">public-subnet-1b</span><span class="subnet-cidr">10.0.2.0/24</span></div>
+          <div class="node net"><span class="ico">ALB</span>
+            <div class="body"><div class="t"><span class="stat on"></span> ALB node (AZ-b)</div><div class="s">elastic network interface</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="outbound">
+        <span class="sg">App SG allows <b>:80</b> from ALB SG only</span>
+        <span>· private tiers reach the internet <b>outbound-only</b> via the NAT Gateway (patching, package installs).</span>
+      </div>
+    </div>
+
+    <div class="rail">
+      <div class="stem"></div>
+      <div class="flowlabel"><span class="num">2</span>ALB → targets · <code>App SG ← ALB SG :80</code></div>
+      <div class="stem"></div>
+    </div>
+
+    <!-- APPLICATION -->
+    <div class="lane" style="--tier:var(--app); --tier-bg:var(--app-bg)">
+      <div class="lane-head">
+        <div class="lane-title">Tier 2 · Application <small>Private subnets · route table: app-rt → NAT (outbound only)</small></div>
+        <span class="lane-tag">≥ 3 EC2 across 2 AZs</span>
+      </div>
+
+      <div class="cols">
+        <div class="subnet">
+          <div class="subnet-meta"><span class="subnet-name">private-subnet-1a</span><span class="subnet-cidr">10.0.11.0/24</span></div>
+          <div class="multi">
+            <div class="node"><span class="ico">EC2</span><div class="body"><div class="t"><span class="stat on"></span> app-web · i-006dcbf0</div><div class="s">10.0.11.139 · instance-id · AZ · db status</div></div></div>
+            <div class="node"><span class="ico">EC2</span><div class="body"><div class="t"><span class="stat on"></span> app-web · i-0375a3d0</div><div class="s">10.0.11.107 · /health · healthy</div></div></div>
+          </div>
+        </div>
+        <div class="subnet">
+          <div class="subnet-meta"><span class="subnet-name">private-subnet-1b</span><span class="subnet-cidr">10.0.12.0/24</span></div>
+          <div class="multi">
+            <div class="node"><span class="ico">EC2</span><div class="body"><div class="t"><span class="stat on"></span> app-web · i-098084ed</div><div class="s">10.0.12.45 · /health · healthy</div></div></div>
+            <div class="sg">No public IPs · reachable only from the ALB security group</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rail">
+      <div class="stem"></div>
+      <div class="flowlabel"><span class="num">3</span>App → DB · <code>Data SG ← App SG :DB-port</code></div>
+      <div class="stem"></div>
+    </div>
+
+    <!-- DATA -->
+    <div class="lane" style="--tier:var(--data); --tier-bg:var(--data-bg)">
+      <div class="lane-head">
+        <div class="lane-title">Tier 3 · Data <small>Isolated private subnets · route table: data-rt → local only</small></div>
+        <span class="lane-tag iso">🔒 No internet route</span>
+      </div>
+
+      <div class="cols">
+        <div class="subnet">
+          <div class="subnet-meta"><span class="subnet-name">data-subnet-1a</span><span class="subnet-cidr">10.0.21.0/24</span></div>
+          <div class="node"><span class="ico">DB</span><div class="body"><div class="t"><span class="stat on"></span> data-db · i-02bb4326</div><div class="s">10.0.21.110:3306 · simulated DB · App tier only</div></div></div>
+        </div>
+        <div class="subnet">
+          <div class="subnet-meta"><span class="subnet-name">data-subnet-1b</span><span class="subnet-cidr">10.0.22.0/24</span></div>
+          <div class="node"><span class="ico">DB</span><div class="body"><div class="t"><span class="stat off"></span> Database (standby)</div><div class="s">RDS Multi-AZ standby (should-have)</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    <span>Deployed &amp; tested: VPC · 6 subnets · IGW · NAT · 3 route tables · ALB (3/3 healthy, load balanced 6/6/6) · 3 app EC2 · data-tier DB. Remaining: RDS/ASG/HTTPS (should-haves) &amp; failover test.</span>
+    <span>Updated 2026-07-23 · us-east-1</span>
+  </footer>
+</div>

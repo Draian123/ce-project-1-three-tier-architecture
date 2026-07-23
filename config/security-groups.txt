@@ -1,0 +1,17 @@
+# Security Groups - ce-project-1 | Generated 2026-07-23 08:27 UTC
+# Least-privilege chain: internet -> ALB SG -> App SG -> Data SG
+
+== alb-sg-3tier (sg-0afa31c9844b6cea0) ==
+  INBOUND:
+    proto=tcp	80	80	0.0.0.0/0	
+    proto=tcp	443	443	0.0.0.0/0	
+
+== app-tier-sg-3tier (sg-0b8d55053c76f6e66) ==
+  INBOUND:
+    proto=tcp	80	80		sg-0afa31c9844b6cea0
+
+== data-tier-sg-3tier (sg-01c6914f0ca937cb1) ==
+  INBOUND:
+    proto=tcp	5432	5432		sg-0b8d55053c76f6e66
+    proto=tcp	3306	3306		sg-0b8d55053c76f6e66
+

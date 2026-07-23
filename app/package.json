@@ -1,0 +1,25 @@
+{
+  "name": "ce-project-1-three-tier-architecture",
+  "version": "1.0.0",
+  "description": "3-tier cloud architecture on AWS: ALB + multi-AZ EC2 app tier + isolated data tier. Web app runtime is Python 3 (stdlib only); this manifest documents metadata and wraps the deploy tooling.",
+  "private": true,
+  "runtime": {
+    "language": "python",
+    "version": ">=3.9",
+    "entry": "app.py",
+    "dependencies": "none (Python standard library only)"
+  },
+  "scripts": {
+    "deploy": "bash deploy.sh",
+    "start-local": "DB_HOST=127.0.0.1 DB_PORT=3306 python3 app.py",
+    "health": "curl -s http://localhost/health"
+  },
+  "config": {
+    "region": "us-east-1",
+    "healthCheckPath": "/health",
+    "appPort": 80,
+    "dbPort": 3306
+  },
+  "author": "Dennis",
+  "license": "MIT"
+}

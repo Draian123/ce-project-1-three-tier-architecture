@@ -1,0 +1,48 @@
+# Load Balancer Configuration - ce-project-1 | Generated 2026-07-23 12:36 UTC
+
+APPLICATION LOAD BALANCER
+{
+    "Name": "ce-app-alb",
+    "DNS": "ce-app-alb-1960431634.us-east-1.elb.amazonaws.com",
+    "Scheme": "internet-facing",
+    "Type": "application",
+    "State": "active",
+    "AZs": [
+        "us-east-1a/subnet-0a8a1e9afe3d8117b",
+        "us-east-1b/subnet-0c28b42a4bdc84fda"
+    ],
+    "SG": "sg-0afa31c9844b6cea0"
+}
+
+LISTENER
+[
+    {
+        "Port": 80,
+        "Proto": "HTTP",
+        "Action": "forward"
+    }
+]
+
+TARGET GROUP
+{
+    "Name": "ce-app-tg",
+    "Proto": "HTTP",
+    "Port": 80,
+    "HCPath": "/health",
+    "HCProto": "HTTP",
+    "Interval": 10,
+    "Healthy": 2,
+    "Unhealthy": 2,
+    "Matcher": "200"
+}
+
+TARGET HEALTH
+--------------------------------------------
+|           DescribeTargetHealth           |
++------+-----------------------+-----------+
+|  AZ  |       Instance        |   State   |
++------+-----------------------+-----------+
+|  None|  i-0375a3d0aebc05159  |  healthy  |
+|  None|  i-098084ed2ca7bb99f  |  healthy  |
+|  None|  i-006dcbf0b26c73872  |  healthy  |
++------+-----------------------+-----------+
