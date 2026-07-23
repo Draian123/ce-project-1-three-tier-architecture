@@ -1,0 +1,49 @@
+# Scaling & Monitoring (should-have bonus) - ce-project-1 | 2026-07-23 14:19 UTC
+
+AUTO SCALING GROUP  ce-app-asg
+{
+    "Min": 2,
+    "Desired": 3,
+    "Max": 4,
+    "Subnets": "subnet-049f32c8e8e534e85,subnet-0a9bef3ba8fa34d1e",
+    "HealthCheck": "ELB",
+    "LaunchTemplate": "ce-app-lt",
+    "TargetGroups": [
+        "arn:aws:elasticloadbalancing:us-east-1:697345203222:targetgroup/ce-app-tg/3f16f11f811aa77e"
+    ]
+}
+
+SCALING POLICY: ce-cpu-tracking (target-tracking, ASGAverageCPUUtilization = 50%)
+LAUNCH TEMPLATE: ce-app-lt (lt-084477dff93c22b43) - AL2023 t3.micro, app-sg, IMDSv2 required
+
+HTTPS LISTENER
+  ALB ce-app-alb: HTTP :80 + HTTPS :443
+  ACM cert (imported, self-signed for demo): arn:aws:acm:us-east-1:697345203222:certificate/f4d87a4c-cb7a-4eab-96ac-af1c5e14e957
+  SSL policy: ELBSecurityPolicy-2016-08
+
+VPC FLOW LOGS
+[
+    {
+        "Id": "fl-032b57dee34896365",
+        "Dest": "cloud-watch-logs",
+        "LogGroup": "/vpc/ce-project-1/flowlogs",
+        "Traffic": "ALL",
+        "Status": "ACTIVE"
+    }
+]
+
+CLOUDWATCH ALARMS
+[
+    {
+        "Name": "ce-alb-target-5xx",
+        "Metric": "HTTPCode_Target_5XX_Count",
+        "Threshold": 5.0,
+        "State": "OK"
+    },
+    {
+        "Name": "ce-alb-unhealthy-hosts",
+        "Metric": "UnHealthyHostCount",
+        "Threshold": 1.0,
+        "State": "OK"
+    }
+]

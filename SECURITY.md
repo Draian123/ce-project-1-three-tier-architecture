@@ -48,9 +48,9 @@ This means the data tier is protected by **two** controls at once: a restrictive
 
 | Gap | Risk | Mitigation (see `IMPROVEMENTS.md`) |
 |---|---|---|
-| Listener is HTTP :80 (no TLS) | Traffic in cleartext | Add HTTPS listener + ACM certificate; redirect 80→443 |
+| ~~Listener is HTTP :80 (no TLS)~~ → **HTTPS :443 added** (ACM cert; self-signed for demo) | mostly closed | For production: use an ACM public cert with a real domain and redirect 80→443 |
 | Simulated DB, no auth/encryption | Not production-grade | Move to RDS with IAM/secret auth + encryption at rest (KMS) |
-| No VPC Flow Logs | Limited network forensics | Enable Flow Logs to CloudWatch/S3 |
+| ~~No VPC Flow Logs~~ → **enabled** (`fl-032b57de…` → CloudWatch, ALL traffic) | closed | — |
 | No WAF on the ALB | L7 attacks (injection, bots) | Attach AWS WAF managed rule sets |
 | Root account in use for CLI | Broad blast radius | Use an IAM admin/role with MFA; reserve root for break-glass |
 | Single NAT / no secrets manager | Availability + secret handling | Per-AZ NAT; AWS Secrets Manager for DB credentials |

@@ -54,6 +54,12 @@ Full detail in **[ARCHITECTURE.md](ARCHITECTURE.md)**.
 - **Keyless administration** — SSM Session Manager; no SSH, no bastion, no open port 22.
 - **Stateless app** — any instance serves any request, enabling trivial scaling and failover.
 
+## Reliability & security add-ons (should-haves, implemented)
+- **Auto Scaling Group** — app tier runs behind `ce-app-asg` (min 2 / desired 3 / max 4) with a **CPU target-tracking** policy; a failed instance is now *replaced automatically*, not just restarted.
+- **HTTPS** — ALB has an `:443` listener with an ACM certificate (self-signed for this demo) alongside `:80`.
+- **Monitoring** — **VPC Flow Logs** to CloudWatch + **CloudWatch alarms** (unhealthy hosts, target 5XX).
+- **Cost control** — [`app/manage.sh`](app/manage.sh) `stop`/`start`/`status` pauses compute (ASG → 0, data instance stopped) without tearing anything down.
+
 ## Testing results
 
 | Test | Result |

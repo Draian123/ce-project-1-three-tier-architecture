@@ -2,15 +2,19 @@
 
 What I'd change to take this from a working bootcamp deployment to a production-ready system, organized by horizon.
 
+## ✅ Already implemented (should-have bonus)
+- **Auto Scaling Group** `ce-app-asg` (min 2 / desired 3 / max 4) with **CPU target-tracking** scaling.
+- **HTTPS listener + ACM certificate** on the ALB (`:443`; self-signed for the demo).
+- **VPC Flow Logs** → CloudWatch (`/vpc/ce-project-1/flowlogs`).
+- **CloudWatch alarms** — unhealthy hosts, target 5XX.
+
 ## Short-term (0–3 months)
 
 | Improvement | Why | Effort |
 |---|---|---|
-| **HTTPS listener + ACM certificate** | Encrypt traffic in transit; redirect 80→443 | Low (ACM certs are free) |
-| **Auto Scaling Group for the app tier** | Replace the fixed 3 instances so failures self-heal and capacity follows demand | Medium |
+| **ACM public cert + custom domain** | Replace the self-signed cert; redirect 80→443 | Low |
 | **Per-AZ NAT Gateway** | Remove the single-NAT SPOF for private egress | Low (cost trade-off) |
-| **VPC Flow Logs** | Network forensics & troubleshooting | Low |
-| **CloudWatch alarms + dashboard** | Alert on unhealthy hosts, 5xx, CPU; visualize health | Medium |
+| **CloudWatch dashboard + SNS actions** | Visualize health; page on alarm | Medium |
 | **S3 + SSM VPC endpoints** | Cut NAT data charges and reduce internet dependency | Low |
 | **Secrets Manager for DB credentials** | Stop passing connection details in plain config | Low |
 
@@ -28,13 +32,13 @@ What I'd change to take this from a working bootcamp deployment to a production-
 
 ## Production-readiness checklist
 
-- [ ] TLS everywhere (HTTPS listener, redirect from 80)
-- [ ] App tier behind an Auto Scaling Group with min/max/desired
+- [x] TLS on the ALB (HTTPS :443 listener) — *self-signed for demo; use ACM public cert + redirect 80→443 for prod*
+- [x] App tier behind an Auto Scaling Group with min/max/desired (+ CPU target-tracking)
 - [ ] Managed database (RDS/Aurora) Multi-AZ, encrypted, automated backups
 - [ ] Per-AZ NAT Gateways (no single-AZ egress SPOF)
 - [ ] Secrets in Secrets Manager / SSM Parameter Store (never in code)
 - [ ] Least-privilege IAM everywhere; **root not used** for day-to-day (MFA on root)
-- [ ] Observability: CloudWatch alarms, dashboards, centralized logs, Flow Logs
+- [x] Observability: CloudWatch alarms + VPC Flow Logs (dashboards/SNS actions still to add)
 - [ ] WAF + Shield on public endpoints
 - [ ] Infrastructure as Code; peer-reviewed changes
 - [ ] Automated CI/CD with rollback

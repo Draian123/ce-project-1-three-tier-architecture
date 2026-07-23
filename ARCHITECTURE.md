@@ -13,8 +13,8 @@ A production-shaped **3-tier web application** on AWS: an internet-facing load b
 | Network | VPC `bootcamp-vpc` | `vpc-0917ed6d87b005f58` | 10.0.0.0/16 network boundary |
 | Network | Internet Gateway `bootcamp-igw` | `igw-0b05f13160e05bfc8` | Ingress/egress for public subnets |
 | Network | NAT Gateway `bootcamp-nat-1a` | `nat-0a456faf68c5e5724` | Outbound-only internet for private subnets (EIP 3.219.62.36) |
-| Tier 1 | Application Load Balancer `ce-app-alb` | internet-facing | HTTP :80 entry point, spreads traffic across AZs |
-| Tier 2 | 3× EC2 `app-web` (t3.micro, AL2023) | — | Stateless web app; target group members |
+| Tier 1 | Application Load Balancer `ce-app-alb` | internet-facing | HTTP :80 **and HTTPS :443 (ACM)** entry point, spreads traffic across AZs |
+| Tier 2 | Auto Scaling Group `ce-app-asg` (min 2 / desired 3 / max 4) | `lt-084477dff93c22b43` | Stateless web app on t3.micro/AL2023; target group members; CPU target-tracking scaling |
 | Tier 3 | 1× EC2 `data-db` (simulated DB) | `i-02bb4326af4a8a7b2` | Data store placeholder on :3306 |
 
 ## Network design
@@ -71,10 +71,15 @@ Being stateless, any instance can serve any request, which is what makes horizon
 - **Self-healing app:** the `systemd` unit is `enabled`, so the app restarts on boot; a recovered instance auto-rejoins the target group.
 - **Stateless tier:** no session affinity required; requests are freely balanced.
 
+### Implemented should-haves (bonus)
+- **Auto Scaling Group** `ce-app-asg` — replaces the fixed instances; a failed instance is launched fresh automatically, and a **CPU target-tracking** policy (50%) scales 2→4 with load.
+- **HTTPS listener** on the ALB (`:443`, ACM cert — self-signed for the demo).
+- **VPC Flow Logs** (`fl-032b57de…` → CloudWatch) and **CloudWatch alarms** (unhealthy hosts, target 5XX).
+
 ### Current limitations (addressed in `IMPROVEMENTS.md`)
 - **Single NAT Gateway** in AZ-a — if us-east-1a fails, private-subnet outbound breaks (a per-AZ NAT is the should-have fix).
-- **No Auto Scaling Group** — a failed instance recovers only if restarted; an ASG would launch a replacement automatically.
 - **Simulated single-node DB** — no managed backups/replication; RDS Multi-AZ is the production path.
+- **Self-signed TLS cert** — a real deployment would use an ACM public cert with an owned domain.
 
 ## Management plane
 Instances carry the `ec2-s3-cloudwatch-role` instance profile (`AmazonSSMManagedInstanceCore` + `CloudWatchAgentServerPolicy`). This enables **SSM Session Manager / Run Command** for administration with **no SSH keys, no bastion host, and no inbound ports open** on the private tiers — a meaningful security win over traditional SSH access.
